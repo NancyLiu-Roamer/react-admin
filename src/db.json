@@ -1,0 +1,165 @@
+{
+  "posts": [
+    {
+      "title": "dasdasdff",
+      "author": "111",
+      "id": 1
+    },
+    {
+      "id": 2,
+      "title": "22222",
+      "author": "me"
+    },
+    {
+      "id": "3",
+      "title": "dasdf",
+      "author": "dasfjlasdf"
+    },
+    {
+      "title": "dasdasdff",
+      "author": "dasfjlasasdfaddf",
+      "id": "HS4s6gM"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "1111 comment",
+      "postId": 1
+    }
+  ],
+  "rights": [
+    {
+      "id": 1,
+      "title": "Home",
+      "key": "/home",
+      "permission": 1,
+      "grade": 1
+    },
+    {
+      "id": 2,
+      "title": "Users",
+      "key": "/user-manage",
+      "permission": 1,
+      "grade": 1
+    },
+    {
+      "id": 7,
+      "title": "Auth",
+      "key": "/right-manage",
+      "permission": 1,
+      "grade": 1
+    },
+    {
+      "id": 14,
+      "title": "News",
+      "key": "/news-manage",
+      "permission": 1,
+      "grade": 1
+    },
+    {
+      "id": 21,
+      "title": "Audit",
+      "key": "/audit-manage",
+      "permission": 1,
+      "grade": 1
+    },
+    {
+      "id": 24,
+      "title": "Publish",
+      "key": "/publish-manage",
+      "permission": 1,
+      "grade": 1
+    }
+  ],
+  "children": [
+    {
+      "id": 3,
+      "title": "Add User",
+      "key": "/user-manage/add",
+      "grade": 2,
+      "permission": 2,
+      "rightId": 2
+    },
+    {
+      "id": 4,
+      "title": "Delete User",
+      "key": "/user-manage/delete",
+      "grade": 2,
+      "rightId": 2
+    },
+    {
+      "id": 5,
+      "title": "Update User",
+      "key": "/user-manage/update",
+      "grade": 2,
+      "rightId": 2
+    },
+    {
+      "id": 6,
+      "title": "User List",
+      "key": "/user-manage/list",
+      "grade": 2,
+      "rightId": 2
+    },
+    {
+      "id": 8,
+      "title": "Auth Delete",
+      "key": "/auth-manage/delete",
+      "grade": 2,
+      "rightId": 7
+    },
+    {
+      "id": 9,
+      "title": "Auth Edit",
+      "key": "/auth-manage/edit",
+      "grade": 2,
+      "rightId": 7
+    }
+  ],
+  "roles": [
+    {
+      "id": 1,
+      "role": "super admin",
+      "rights": [
+        "/user-manage",
+        "/auth-manage/delete",
+        "/auth-manage/edit"
+      ]
+    },
+    {
+      "id": 2,
+      "role": "region admin",
+      "rights": [
+        "/auth-manage/delete",
+        "/auth-manage/edit"
+      ]
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "username":"admin",
+      "password":123456,
+      "roleStatus":true,
+      "default":true,
+      "roleId":1
+    },
+    {
+      "id": 2,
+      "username":"zhang",
+      "password":123456,
+      "roleStatus":false,
+      "default":false,
+      "roleId":1
+    },
+    {
+      "id": 3,
+      "username":"li",
+      "password":123456,
+      "roleStatus":false,
+      "default":true,
+      "roleId":1
+    }
+  ]
+}
