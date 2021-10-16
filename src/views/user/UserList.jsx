@@ -3,18 +3,16 @@ import { Modal, Table, Button, Switch, } from 'antd'
 import { Form } from 'antd'
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import axios from 'axios'
-import UserForm from '../../../components/UserForm'
-
+import UserForm from '../../components/UserForm'
 
 export default function UserList() {
-
     const [dataSource, setdataSource] = useState([])
-
     useEffect(() => {
-        axios.get('http://localhost:3000/users').then(
+        axios.get('/userlist').then(
             res => {
-                const list = res.data
-                setdataSource(list)
+                const list = res.data.data.users
+                console.log(list);
+                 setdataSource(list)
             }
         )
     }, [])
@@ -50,16 +48,16 @@ export default function UserList() {
     }
     const columns = [
         {
-            title: 'Region',
-            dataIndex: 'region',
-        },
-        {
-            title: 'role',
-            dataIndex: 'roleId',
-        },
-        {
             title: 'Username',
             dataIndex: 'username',
+        },
+        {
+            title: 'Phone',
+            dataIndex: 'phone',
+        },
+        {
+            title: 'Eamil',
+            dataIndex: 'email',
             // render: (key) => {
             //     return <Tag color='pink'>{key}</Tag>
             // }
@@ -91,7 +89,6 @@ export default function UserList() {
 
     const [visible, setVisible] = useState(false);
     const onCreate = (values) => {
-        // axios.post('',)
         console.log('Received values of form: ', values);
         setVisible(false);
     };
@@ -110,7 +107,7 @@ export default function UserList() {
 
             <Table dataSource={dataSource} columns={columns}
                 pagination={{ pageSize: 5 }}
-                rowKey={(item) => item.id}
+                rowKey='id'
             />
         </div>
     )

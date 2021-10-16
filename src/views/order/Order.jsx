@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function NoPermission() {
+export default function Order() {
     return (
         <div>
-            i am no permit
+            
         </div>
     )
 }
