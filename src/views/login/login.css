@@ -1,31 +1,36 @@
+.login-total-wrapper{
+  height: 100%;
+  width: 100%;
+  padding: 100px;
+  background: linear-gradient(145deg, #e4e3e4, #ffffff);
+}
 .login-logo{
   font-size: 50px;
   font-weight: bolder;
-  color: #585454;
-  margin: 100px auto;
+  color: #7c7b7c;
+  margin: 0px auto;
   text-align: center;
 }
 .login-wrapper{
   width: 30%;
   min-width: 500px;
   height: 350px;
-  border-radius: 39px;
-  background: #292a2e;
-  box-shadow: inset 41px 41px 82px #101112,
-              inset -41px -41px 82px #42434a;
-  margin: -30px auto;
+  background: linear-gradient(145deg, #e4e3e4, #ffffff);
+  box-shadow:  10px 10px 31px #7c7b7c,
+             -10px -10px 31px #ffffff;
+  margin: 50px auto;
   padding: 60px 50px;
 }
 #components-form-demo-normal-login .login-form {
     max-width: 300px;
     height: 100%;
   }
-#components-form-demo-normal-login .login-form-forgot {
+/* #components-form-demo-normal-login .login-form-forgot {
     float: right;
-  }
-#components-form-demo-normal-login .ant-col-rtl .login-form-forgot {
+  } */
+/* #components-form-demo-normal-login .ant-col-rtl .login-form-forgot {
     float: left;
-  }
+  } */
 #components-form-demo-normal-login .login-form-button {
     width: 100%;
   }

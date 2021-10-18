@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import './login.css'
 import { Form, Input, Button, Checkbox, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import  {reqLogin } from '../../api';
+import { reqLogin } from '../../api';
 export default function Login() {
     let history = useHistory()
     const onFinish = async (values) => {
@@ -12,7 +12,7 @@ export default function Login() {
             if (response.data.status === 0) {
                 message.success('Login Successful')
                 localStorage.setItem('token', 'hhh')
-                localStorage.setItem('_user',response.data)
+                localStorage.setItem('_user', response.data)
                 history.push('/home')
             } else {
                 message.error('Login Failed')
@@ -22,10 +22,9 @@ export default function Login() {
         }
     }
     return (
-        <div>
-            <div className='login-logo'>Login Form</div>
+        <div className='login-total-wrapper'>
+            <div className='login-logo'>Blog Management</div>
             <div className='login-wrapper'>
-
                 <Form
                     name="normal_login"
                     className="login-form"
@@ -41,9 +40,8 @@ export default function Login() {
                                 required: true,
                                 message: 'Please input your Username!',
                             },
-                        ]}
-                    >
-                        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+                        ]}>
+                        <Input prefix={< UserOutlined className="site-form-item-icon" />} placeholder="Username" />
                     </Form.Item>
                     <Form.Item
                         name="password"
@@ -67,7 +65,7 @@ export default function Login() {
                     </Form.Item>
 
                     <Form.Item>
-                        <Button type="primary" htmlType="submit" className="login-form-button">
+                        <Button htmlType="submit" className="login-form-button">
                             Login
                         </Button>
                     </Form.Item>

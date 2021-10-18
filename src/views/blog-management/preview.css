@@ -1,0 +1,12 @@
+.preview-wrapper {
+    /* padding: 24px; */
+    background-color: #f5f5f5;
+  }
+.preview-content{
+    padding: 10px;
+    border-radius: 15px;
+    background: #ffffff;
+    box-shadow: inset -8px -8px 23px #d6d6d6,
+                inset 8px 8px 23px #ffffff;
+    overflow: auto;
+}

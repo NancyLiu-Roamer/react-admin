@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Modal, Table, Tag, Button, Tree } from 'antd'
+import { Modal, Table,Button} from 'antd'
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import axios from 'axios'
 export default function RoleList() {
@@ -7,28 +7,21 @@ export default function RoleList() {
     // get page data
     const [dataSource, setDataSource] = useState([])
     useEffect(() => {
-        axios.get('http://localhost:3000/roles').then(
+        axios.get('/users/rolelist').then(
             res => {
-                setDataSource(res.data)
-            }
-        )
-        axios.get('http://localhost:3000/rights?_embed=children').then(
-            res => {
-                setTreeData(res.data)
+                
+              setDataSource(res.data.data.roles)
             }
         )
     }, [])
     const columns = [
         {
-            title: 'ID',
-            dataIndex: 'id',
-            render: (id) => {
-                return <Tag color='pink'>{id}</Tag>
-            }
+            title: 'Name',
+            dataIndex: 'name',
         },
         {
-            title: 'Role',
-            dataIndex: 'role',
+            title: 'Authname',
+            dataIndex: 'auth_name',
         },
         {
             title: 'Operate',
@@ -100,13 +93,13 @@ export default function RoleList() {
                 onCancel={() => setVisible(false)}
                 width={1000}
             >
-                <Tree
+                {/* <Tree
                     checkable
                     checkedKeys={currentRights}
                     onCheck={onCheckKey}
                     treeData={treeData}
                     checkStrictly
-                />
+                /> */}
             </Modal>
         </div>
     )

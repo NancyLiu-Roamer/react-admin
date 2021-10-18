@@ -5,7 +5,6 @@ const UserModel = require('../../models/UserModel')
 const RoleModel = require('../../models/RoleModel')
 
 
-
 router.get('/', (req, res) => {
     UserModel.find({username: {'$ne': 'admin'}})
       .then(users => {

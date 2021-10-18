@@ -1,28 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { BrowserRouter, Route, Switch, Redirect, useLocation } from 'react-router-dom'
-import { Layout } from 'antd'
-import './home.css'
-import User from '../user/UserList'
-// import User from '../views/user/UserList'
-import Role from '../role/RoleList'
-import Product from '../product/Products'
-import Order from '../order/Order'
-import ProductCategory from '../product/ProductCategory'
-import NoPermission from '../no-permission/NoPermission'
-import SideMenu from '../../components/side/SideMenu'
-import TopHeader from '../../components/TopHeader'
-export default function Home(props) {
-    const { Content } = Layout;
-    let location = useLocation()
-    
-    const [user, setUser] = useState()
-    useEffect(() => {
-        setUser(location.state)
-    }, [])
+import React from 'react'
+// import './home.css'
+export default function Home() {
     return (
         <div>
-            
+            I am home
         </div>
+    )
+}
+
         // <Layout>
         //     {/* <SideMenu /> */}
         //     {/* <Layout className="site-layout"> */}
@@ -50,5 +35,12 @@ export default function Home(props) {
         //         </Content>
         //     </Layout>
         // </Layout>
-    )
-}
+// import User from '../views/user/UserList'
+// import Role from '../role/RoleList'
+// import Product from '../product/Products'
+// import Order from '../order/Order'
+// import ProductCategory from '../product/ProductCategory'
+// import NoPermission from '../no-permission/NoPermission'
+// import SideMenu from '../../components/side/SideMenu'
+// import TopHeader from '../../components/TopHeader'
+// import User from '../user/UserList'

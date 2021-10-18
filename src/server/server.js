@@ -7,7 +7,7 @@ app.use(cookieParser());
 
 const login  = require('./routers/login/login') 
 const products = require('./routers/products/index')
-const userList = require('./routers/users/users')
+const users = require('./routers/users/index')
 const mongoose = require('mongoose')
 
 // connect db by mongoose
@@ -26,6 +26,6 @@ mongoose.connect('mongodb://localhost/server_db2')
 //route module
 app.use('/login',login)
 app.use('/products',products)
-app.use('/userlist',userList)
+app.use('/users',users)
 
 

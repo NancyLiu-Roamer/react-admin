@@ -1,27 +1,26 @@
 import React, { useEffect, useState } from 'react'
-import { withRouter,useLocation } from 'react-router-dom';
-import { Layout, Menu } from 'antd';
+import { withRouter } from "react-router";
+import { useLocation,useHistory } from 'react-router-dom';
+import { Menu } from 'antd';
 import './sideMenu.css'
-import axios from 'axios';
 import menuConfig from '../../utils/menuConfig';
-const { Sider } = Layout;
 const { SubMenu } = Menu;
 
-function SideMenu(props) {
+function SideMenu() {
   // get menu list
   const [menuList, setMenuList] = useState([])
-  const [menuAuth, setMenuAuth] = useState([])
+  // const [menuAuth, setMenuAuth] = useState([])
   let location  = useLocation()
+  let history = useHistory()
  
   useEffect(() => {
-    setMenuList(menuConfig)
-    
-  }, [])
+    setMenuList(menuConfig)  
+  }, [location])
 // console.log(props,'side');
   //home page menu permission
-  const checkPermission = (item) => {
-    return item.permission === 1
-  }
+  // const checkPermission = (item) => {
+  //   return item.permission === 1
+  // }
 
   const renderMenu = (menuList) => {
     return menuList.map(item => {
@@ -29,16 +28,13 @@ function SideMenu(props) {
       if (item.children?.length > 0 ) {
         return <SubMenu key={item.key}
           title={item.title}
-          // onClick={() => {
-          //   props.history.push(item.key)
-          // }}
           >
           {renderMenu(item.children)}         
         </SubMenu>
       }
       return <Menu.Item key={item.key}
         onClick={() => {
-          props.history.push(item.key)
+         history.push(item.key)
         }}>{item.title}</Menu.Item>
     })
   }
@@ -47,18 +43,16 @@ function SideMenu(props) {
   const selectKeys = [location.pathname]
   const openKeys = ['/'+ location.pathname.split('/')[1]]
 
+  
     return (
-      <Sider theme='light'>
-        {/* side menu title */}
-        <div className="logo">News</div>
-        {/* side menu */}
-        <Menu mode="inline" 
+      <div className='side-wrapper'>
+        <div className="logo">Blog Management</div>
+        <Menu mode="inline" theme='dark'
         defaultOpenKeys={openKeys} 
         defaultSelectedKeys={selectKeys}>
           {renderMenu(menuList)}
         </Menu>
-      </Sider>
+      </div>
     )
   }
-
 export default withRouter(SideMenu)
