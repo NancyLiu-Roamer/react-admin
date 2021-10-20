@@ -28,19 +28,19 @@ export default function Preview(props) {
 
                             {/* if no tag then not mapping */}
                             {blogContent.tags?.map(tag => {
-                                let color = tag.length > 5 ? 'geekblue' : 'green';
+                                let color = tag> 2 ? 'geekblue' : 'green';
                                 return (
                                     <Tag color={color} key={tag}>
-                                        {tag.toUpperCase()}
+                                        {tag===1?'Vue':tag===2?'React':'NodeJS'}
                                     </Tag>
                                 );
                             })}
 
                         </Descriptions.Item>
                         <Descriptions.Item label="Status">{
-                            blogContent.status === 0 ? 'Draft' :
-                                blogContent.status === 1 ?
-                                    'Archived' : 'Online'
+                            blogContent.status === 1 ? 'Draft' :
+                                blogContent.status === 2 ?
+                                    'Active' : 'Archived'
                         }</Descriptions.Item>
                     </Descriptions>
                     <Row>

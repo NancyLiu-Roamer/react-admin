@@ -1,13 +1,15 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Modal, Table, Button, Tag } from 'antd'
-import { DeleteTwoTone, EditOutlined, EyeTwoTone, 
-    ExclamationCircleOutlined,CloudUploadOutlined} from '@ant-design/icons'
+import {
+    DeleteTwoTone, EditOutlined, EyeTwoTone,
+    ExclamationCircleOutlined, CloudUploadOutlined
+} from '@ant-design/icons'
 
 export default function Draft(props) {
     const [blogList, setBlogList] = useState([])
     useEffect(() => {
-        axios.get('http://localhost:3000/posts/?status_lte=1').then(
+        axios.get('http://localhost:3000/posts/?status_ne=2').then(
             res => {
                 setBlogList(res.data)
             }
@@ -29,10 +31,10 @@ export default function Draft(props) {
             render: tags => (
                 <span>
                     {tags.map(tag => {
-                        let color = tag.length > 5 ? 'geekblue' : 'green';
+                        let color = tag >2 ? 'geekblue' : 'green';
                         return (
                             <Tag color={color} key={tag}>
-                                {tag.toUpperCase()}
+                                {tag===1?'Vue':tag===2?'React':'NodeJS'}
                             </Tag>
                         );
                     })}
@@ -47,9 +49,9 @@ export default function Draft(props) {
         {
             title: 'Status',
             dataIndex: 'status',
-            render: (status) => 
-            status === 0 ? 'Draft' : status === 1 ?
-            'Archived' : 'Online' 
+            render: (status) =>
+                status === 1 ? 'Draft' : status === 2 ?
+                    'Active' : 'Archived'
         },
         {
             title: 'Operate',
@@ -60,7 +62,7 @@ export default function Draft(props) {
                         onClick={() => confirmDelete(item)}
                     />
                     <Button
-                        shape={'circle'} icon={<EditOutlined/>}
+                        shape={'circle'} icon={<EditOutlined />}
                         onClick={() => {
                             props.history.push({
                                 pathname: `/blog-management/edit/${item.id}`,
@@ -79,7 +81,7 @@ export default function Draft(props) {
                     />
                     <Button
                         shape={'circle'} icon={<CloudUploadOutlined />}
-                        onClick={() => { onPublish(item)}}
+                        onClick={() => { onPublish(item) }}
                     />
                 </div>
             }
@@ -107,15 +109,15 @@ export default function Draft(props) {
     }
 
     // publish blog
-    const onPublish = (item)=>{
+    const onPublish = (item) => {
         Modal.confirm({
             title: 'Do you want to publish this blog ?',
             icon: <ExclamationCircleOutlined />,
             okText: 'OK',
             onOk() {
-                axios.patch(`http://localhost:3000/posts/${item.id}`,{
-                    status:2
-                }).then(res=>{console.log(res.data)})
+                axios.patch(`http://localhost:3000/posts/${item.id}`, {
+                    status: 1
+                }).then(res => {})
             },
             cancelText: 'Cancel',
         });

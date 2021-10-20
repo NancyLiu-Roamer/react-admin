@@ -22,8 +22,8 @@ const menuList = [
     ]
   },
   {
-    title: 'Images',
-    key: '/images'
+    title: 'Post',
+    key: '/posts'
   },
   {
     title: 'Users',

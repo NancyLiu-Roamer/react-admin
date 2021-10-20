@@ -8,8 +8,7 @@ export default function RoleList() {
     const [dataSource, setDataSource] = useState([])
     useEffect(() => {
         axios.get('/users/rolelist').then(
-            res => {
-                
+            res => {               
               setDataSource(res.data.data.roles)
             }
         )

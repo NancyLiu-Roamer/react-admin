@@ -38,9 +38,10 @@ export default function Create(props) {
             'title':fieldsValue.title,
             'tags':fieldsValue.tag,
             'blog':blogContent,
-            'status':0,
+            'status':1,
             'image':fieldsValue.image
         }
+        console.log(values);
         axios.post('http://localhost:3000/posts',{...values}).then(
             res=>{
                 notification.info({
@@ -75,7 +76,7 @@ export default function Create(props) {
                         <Row>
                             {tags.map(item =>
                                 <Col key={item.id}>
-                                    <Checkbox value={item.name} style={{ lineHeight: '32px' }}>
+                                    <Checkbox value={item.id} style={{ lineHeight: '32px' }}>
                                         {item.name}
                                     </Checkbox>
                                 </Col>)}
@@ -93,18 +94,6 @@ export default function Create(props) {
                 {/* date */}
                 <Form.Item name="date-picker" label="Date">
                     <DatePicker format="YYYY-MM-DD" />
-                </Form.Item>
-
-                {/* image */}
-                <Form.Item
-                    name="image"
-                    label="Image"
-                    valuePropName="fileList"
-                    getValueFromEvent={normFile}
-                >
-                    <Upload name="image" action="/upload.do" listType="picture">
-                        <Button icon={<UploadOutlined />}>Click to upload</Button>
-                    </Upload>
                 </Form.Item>
 
                 {/* button */}

@@ -1,46 +1,115 @@
-import React from 'react'
-// import './home.css'
+import React, { useEffect, useRef, useState } from 'react'
+import { Card, Col, Row, List } from 'antd';
+import * as Echarts from 'echarts';
+import axios from 'axios';
+import _ from 'lodash';
+import makePie from '../../components/charts/pie';
+import makeDonuts from '../../components/charts/donuts';
+import makeBar from '../../components/charts/bar';
+import { NavLink } from 'react-router-dom';
 export default function Home() {
+
+    const [recentUpBlog, setRecentUpBlog] = useState()
+    const [recentArchBlog, setRecentArchBlog] = useState()
+    const barRef = useRef()
+    const pieRef = useRef()
+    const donutRef = useRef()
+
+    //recent upload
+    useEffect(() => {
+        axios.get(`http://localhost:3000/posts`).then(
+            res => {
+                const temp = _.orderBy(res.data, ['res.data.date'], ['desc']).slice(0, 5);
+                setRecentUpBlog(temp)
+            }
+        )
+    }, [])
+    // recent archive
+    useEffect(() => {
+        axios.get(`http://localhost:3000/posts?status=3`).then(
+            res => {
+                const temp = _.orderBy(res.data, ['res.data.date'], ['desc']).slice(0, 5);
+                setRecentArchBlog(temp)
+            }
+        )
+    }, [])
+
+
+    //bar data posts
+    useEffect(() => {
+        axios.get('http://localhost:3000/posts').then(
+            res => {
+                const option = makeBar('Post per Status',res.data)
+                const myChart = Echarts.init(barRef.current);
+                myChart.setOption(option)
+            }
+        )
+    }, [])
+
+    //pie data users
+    useEffect(() => {
+        axios.get('http://localhost:3000/users?_expand=role').then(
+            res => {
+                const option = makePie('Status',res.data) 
+                const myChart = Echarts.init(pieRef.current);
+                myChart.setOption(option)
+            }
+        )
+    }, [])
+ 
+    //donuts data catogries
+    useEffect(() => {
+        axios.get('http://localhost:3000/posts').then(            
+            res => {
+                const option = makeDonuts('Catogories',res.data)
+                const myChart = Echarts.init(donutRef.current);
+                myChart.setOption(option)
+            }
+        )
+
+    }, [])
+
     return (
         <div>
-            I am home
+            <Row gutter={[10, 5]} >
+                <Col span={6}>
+                    <Card title="Recent Posted" bordered>
+                        <List
+                            size="small"
+                            dataSource={recentUpBlog}
+                            renderItem={item => <List.Item><NavLink to={`/blog-management/preview/${item.id}`}>{item.title}</NavLink></List.Item>}
+                        />
+                    </Card>
+                </Col>
+                <Col span={6}>
+                    <Card title="Recent Archived" bordered>
+                        <List
+                            size="small"
+                            dataSource={recentArchBlog}
+                            renderItem={item => <List.Item><NavLink to={`/blog-management/preview/${item.id}`}>{item.title}</NavLink></List.Item>}
+                        />
+                    </Card>
+                </Col>
+                <Col span={12}>
+                    <Card bordered title='Posts per Status'>
+                        <div ref={barRef} style={{ height: '300px', width: '100%' }}></div>
+                    </Card>
+                </Col>
+                <Col span={12}>
+                    <Card bordered title='Users'>
+                        <div ref={pieRef} style={{ height: '300px', width: '100%' }}></div>
+                    </Card>
+                </Col>
+                <Col span={12}>
+                    <Card bordered title='Posts per Catogories'>
+                        <div ref={donutRef} style={{ height: '300px', width: '100%' }}>
+                        </div>
+                    </Card>
+                </Col>
+
+            </Row>
+
+
         </div>
     )
 }
-
-        // <Layout>
-        //     {/* <SideMenu /> */}
-        //     {/* <Layout className="site-layout"> */}
-        //         {/* <TopHeader user={user}/> */}
-        //         <Content className="site-layout-background"
-        //             style={{
-        //                 margin: '24px 16px',
-        //                 padding: 24,
-        //                 minHeight: 280,
-        //             }}
-        //         >
-        //             {/* <BrowserRouter>
-        //                 <Switch> */}
-        //             {/* <Route path='/home' component={Home}></Route> */}
-        //             {/* <Route path='/user' component={User}></Route> */}
-        //             {/* <Route path='/role' component={Role}></Route>
-        //                     <Route path='/order' component={Order}></Route>
-        //                     <Route path='/products/category' component={ProductCategory}></Route>
-        //                     <Route path='/products/product' component={Product}></Route>
-        //                     {/* <Redirect from='/' to={'/home', { a: '1' }} exact /> */}
-        //             {/* <Redirect from='/' to='/home' exact/>
-        //                     <Route path='*' component={NoPermission}></Route> 
-        //                 </Switch>
-        //             </BrowserRouter> */}
-        //         </Content>
-        //     </Layout>
-        // </Layout>
-// import User from '../views/user/UserList'
-// import Role from '../role/RoleList'
-// import Product from '../product/Products'
-// import Order from '../order/Order'
-// import ProductCategory from '../product/ProductCategory'
-// import NoPermission from '../no-permission/NoPermission'
-// import SideMenu from '../../components/side/SideMenu'
-// import TopHeader from '../../components/TopHeader'
-// import User from '../user/UserList'

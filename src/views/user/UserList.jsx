@@ -37,7 +37,10 @@ export default function UserList() {
         },
         {
             title: 'Role',
-            dataIndex: 'role',
+            dataIndex: 'roleId',
+            render:(roleId)=>(
+                roleId===1?'Super Admin':roleId===2?'Manager':'User' 
+            )         
         },
         {
             title: 'Email',
@@ -89,13 +92,11 @@ export default function UserList() {
         console.log(item)
         axios.delete(`http://localhost:3000/users/${item.id}`).then(
             res => {
-                console.log(res.data)
                 //??? refresh for now need server res.data
                 setdataSource([...dataSource, res.data])
             }
         )
     }
-
 
     //change role status
     const handleRoleStatus = (status, item) => {
@@ -110,7 +111,6 @@ export default function UserList() {
     //edit user
     const editUser = (item) => {
         setEditFormVisible(true)
-        console.log(item)
         setCurrentProcessItem(item)
         //change async to sync
         setTimeout(()=>{

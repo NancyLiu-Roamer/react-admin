@@ -28,10 +28,10 @@ export default function Published(props) {
                 <span>
                     {/* if no tag then not mapping */}
                     {tags?.map(tag => {
-                        let color = tag.length > 5 ? 'geekblue' : 'green';
+                        let color = tag> 2 ? 'geekblue' : 'green';
                         return (
                             <Tag color={color} key={tag}>
-                                {tag.toUpperCase()}
+                                 {tag===1?'Vue':tag===2?'React':'NodeJS'}
                             </Tag>
                         );
                     })}
@@ -47,8 +47,8 @@ export default function Published(props) {
             title: 'Status',
             dataIndex: 'status',
             render: (status) => 
-                status === 0 ? 'Draft' : status === 1 ?
-                'Archived' : 'Online'          
+                status === 1 ? 'Draft' : status === 2 ?
+                'Active' :   'Archived'        
         },
         {
             title: 'Operate',
@@ -80,8 +80,8 @@ export default function Published(props) {
             okText: 'OK',
             onOk() {
                 axios.patch(`http://localhost:3000/posts/${item.id}`,{
-                    status:1
-                }).then(res=>{console.log(res.data)})
+                    status:3
+                }).then()
             },
             cancelText: 'Cancel',
         });
