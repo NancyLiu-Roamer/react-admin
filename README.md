@@ -1,6 +1,6 @@
 # Getting Started with Create React App
 
-It is a JSON-server/React Hooks version, for home/user/posts/management pages. MongoDB/React Hook version is ongoing which is avaible on another branch.
+It is json-server/React Hooks/Redux version, for home/user/posts/management pages. MongoDB/React Hook version is ongoing which is avaible on another branch.
 
 ## Available Scripts
 

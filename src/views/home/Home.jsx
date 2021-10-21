@@ -3,9 +3,9 @@ import { Card, Col, Row, List } from 'antd';
 import * as Echarts from 'echarts';
 import axios from 'axios';
 import _ from 'lodash';
-import makePie from '../../components/charts/pie';
-import makeDonuts from '../../components/charts/donuts';
-import makeBar from '../../components/charts/bar';
+import makePie from '../../components/charts/Pie';
+import makeDonuts from '../../components/charts/Donuts';
+import makeBar from '../../components/charts/Bar';
 import { NavLink } from 'react-router-dom';
 export default function Home() {
 
