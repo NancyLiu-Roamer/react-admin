@@ -1,29 +1,37 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Modal, Table, Button, Switch, } from 'antd'
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
-import axios from 'axios'
 import UserForm from '../../components/UserForm'
 import { useLocation } from 'react-router'
+import { reqUserList } from '../../api/user/user'
+import { deleteUser } from '../../api/user/user'
+import { updateUser } from '../../api/user/user'
+import { createUser } from '../../api/user/user'
+
 export default function UserList() {
     const [dataSource, setdataSource] = useState([])
-    const location = useLocation()
+    //form ref
+    const formRef = useRef(null)
+    const editFormRef = useRef()
 
     // edit user form visibility
     const [visible, setVisible] = useState(false);
     const [editFormVisible, setEditFormVisible] = useState(false);
-    const [currentProcessItem,setCurrentProcessItem] = useState()
+    const [currentProcessItem, setCurrentProcessItem] = useState()
+
     // get all users
     useEffect(() => {
-        axios.get('http://localhost:3000/users').then(
-            res => {
-                setdataSource(res.data)
+        const fetchData = async () => {
+            try {
+                const res = await reqUserList({})
+                const response = res.data.data.users
+                setdataSource(response)
+            } catch (e) {
+                console.log(e)
             }
-        )
-    }, [location])
-
-    //form ref
-    const formRef = useRef(null)
-    const editFormRef = useRef()
+        }
+        fetchData()
+    }, [])
 
     // set table head
     const columns = [
@@ -38,9 +46,9 @@ export default function UserList() {
         {
             title: 'Role',
             dataIndex: 'roleId',
-            render:(roleId)=>(
-                roleId===1?'Super Admin':roleId===2?'Manager':'User' 
-            )         
+            render: (roleId) => (
+                roleId === 1 ? 'Admin' : roleId === 2 ? 'Manager' : 'User'
+            )
         },
         {
             title: 'Email',
@@ -89,23 +97,26 @@ export default function UserList() {
         });
     }
     const deleteMethod = (item) => {
-        console.log(item)
-        axios.delete(`http://localhost:3000/users/${item.id}`).then(
-            res => {
-                //??? refresh for now need server res.data
-                setdataSource([...dataSource, res.data])
+        const fetchData = async () => {
+            try {
+                const res = await deleteUser(item.id)
+            } catch (e) {
+                console.log(e)
             }
-        )
+        }
+        fetchData()
     }
 
     //change role status
     const handleRoleStatus = (status, item) => {
-        axios.patch(`http://localhost:3000/users/${item.id}`, {
-            status: !status
-        }).then(
-            res => {
-                setdataSource([...dataSource])
-            })
+        const fetchData = async () => {
+            try {
+                const res = await updateUser({ id: item.id, status: !status })
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        fetchData()
     }
 
     //edit user
@@ -113,39 +124,48 @@ export default function UserList() {
         setEditFormVisible(true)
         setCurrentProcessItem(item)
         //change async to sync
-        setTimeout(()=>{
+        setTimeout(() => {
             editFormRef.current.setFieldsValue(item)
-        },0)
-        
+        }, 0)
+
     }
-    const onUpdate = (values)=>{
+    const onUpdate = async (values) => {
         const temData = {
+            id: currentProcessItem.id,
+            username: values.username,
+            password: values.password,
+            email: values.email,
+            roleId: values.roleId
+
+        }
+        try {
+            const res = await updateUser(temData)
+            setEditFormVisible(false);
+            setdataSource([...dataSource, temData])
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    //create new user
+    const onCreate = async (values) => {
+        const temData = {
+            id: Date.now(),
             username: values.username,
             password: values.password,
             email: values.email,
             status: true,
-            roleId: values.role === 'manager' ? 1 :
-                values.role === 'user' ? 2 : 3
+            roleId: values.roleId
         }
-        axios.patch(`http://localhost:3000/users/${currentProcessItem.id}`, temData)
-        setEditFormVisible(false);
-        setdataSource([...dataSource, temData])
-    }
-        //create new user
-        const onCreate = (values) => {
-            const temData = {
-                username: values.username,
-                password: values.password,
-                email: values.email,
-                status: true,
-                roleId: values.role === 'manager' ? 1 :
-                    values.role === 'user' ? 2 : 3
-            }
-            axios.post('http://localhost:3000/users', temData)
+        try {
+            const res = await createUser(temData)
+            const response = res.data.data
             setVisible(false);
             setdataSource([...dataSource, temData])
-        };
-    
+        } catch (e) {
+            console.log(e)
+        }
+    };
+
     return (
         <div>
             <Button type="primary" onClick={() => {
@@ -165,7 +185,6 @@ export default function UserList() {
                 onOk={() => {
                     formRef.current.validateFields()
                         .then((values) => {
-                            //  send data to userlist
                             onCreate(values);
                             formRef.current.resetFields();
                         })
@@ -189,7 +208,7 @@ export default function UserList() {
                     editFormRef.current.resetFields();
                     setEditFormVisible(false);
                 }}
-                onOk={() => {                                                    
+                onOk={() => {
                     editFormRef.current.validateFields()
                         .then((values) => {
                             //  send data to userlist
@@ -201,7 +220,7 @@ export default function UserList() {
                             console.log('Validate Failed:', info);
                         });
                 }}
-                >
+            >
                 <UserForm
                     visible={editFormVisible}
                     ref={editFormRef} />

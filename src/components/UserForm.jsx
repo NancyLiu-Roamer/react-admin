@@ -1,7 +1,6 @@
 import React, { forwardRef} from 'react'
 import {Form, Input, Select } from 'antd'
 
-// import axios from 'axios';
 const UserForm = forwardRef((props, ref) => {
     const { Option } = Select
     const [form] = Form.useForm();
@@ -65,10 +64,10 @@ const UserForm = forwardRef((props, ref) => {
             >
                 <Input />
             </Form.Item>
-            <Form.Item name="role" label='Role'>
+            <Form.Item name="roleId" label='Role'>
                 <Select style={{ width: 120 }} >
-                    <Option value="Manager">Manager</Option>
-                    <Option value="User">User</Option>
+                    <Option value={2}>Manager</Option>
+                    <Option value={3}>User</Option>
                 </Select>
             </Form.Item>
         </Form>

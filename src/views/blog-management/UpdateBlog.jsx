@@ -3,40 +3,44 @@ import {
     Form, Button, Upload, Input, Checkbox,
     Row, Col, notification
 } from 'antd'
-import { UploadOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import BlogEditor from '../../components/BlogEditor';
-
+import { reqBlog, updateBlog } from '../../api/blog';
 export default function UpdateBlog(props) {
 
     const [tagList, setTags] = useState([])
     const [blogContent, setBlogContent] = useState()
-    
+
     const formRef = useRef()
 
     //config tag list
     useEffect(() => {
-        axios.get('http://localhost:3000/taglist').then(
+        axios.get('/tags').then(
             res => {
-                setTags(res.data)
+                setTags(res.data.data.tag)
             }
         )
     }, [])
 
     //set prefilled content
     useEffect(() => {
-        axios.get(`http://localhost:3000/posts/${props.match.params.id}`).then(
-            res => {
-                const { title, tags, blog } = res.data
+        const fetchData = async () => {
+            try {
+                const response = await reqBlog({ id: props.match.params.id })
+                const { title, tags, blog } = response.data.data.blogs[0]
                 formRef.current.setFieldsValue(
                     {
                         title: title,
                         tag: tags
                     }
-                )              
+                )
                 setBlogContent(blog)
+
+            } catch (error) {
+                console.log(error);
             }
-        )
+        }
+        fetchData()
 
     }, [])
 
@@ -49,24 +53,24 @@ export default function UpdateBlog(props) {
     };
 
     // collect form data
-    const onFinish = (fieldsValue) => {
+    const onFinish = async (fieldsValue) => {
         const values = {
             'title': fieldsValue.title,
             'tags': fieldsValue.tag,
             'blog': blogContent,
-            'status': 1
+            'status': 1,
+            
         }
-        axios.patch(`http://localhost:3000/posts/${props.match.params.id}`, { ...values }).then(
-            res => {
-                notification.info({
-                    message: ``,
-                    description:
-                        'Successfully Updated',
-                    placement: 'topRight'
-                });
-                props.history.push(`/blog-management/preview/${props.match.params.id}`)
-            }
-        )
+        const response = await updateBlog({ id: props.match.params.id }, { ...values })
+        if (response.data.status === 0) {
+            notification.info({
+                message: ``,
+                description:
+                    'Successfully Updated',
+                placement: 'topRight'
+            });
+            props.history.push(`/blog-management/preview/${props.match.params.id}`)
+        }
     }
     const onCancle = () => {
         props.history.goBack()
@@ -76,7 +80,7 @@ export default function UpdateBlog(props) {
         <div>
             <h2>Update Blog</h2>
             <Form
-                labelCol={{ span: 1}}
+                labelCol={{ span: 1 }}
                 wrapperCol={{ span: 18 }}
                 onFinish={onFinish}
                 ref={formRef}
@@ -113,10 +117,10 @@ export default function UpdateBlog(props) {
                 <Form.Item
                     wrapperCol={{
                         span: 12,
-                        offset:8
+                        offset: 8
                     }}
                 >
-                    <Button type="primary" htmlType="submit" style={{marginRight:'20px'}}>
+                    <Button type="primary" htmlType="submit" style={{ marginRight: '20px' }}>
                         Submit
                     </Button>
                     <Button type="primary" onClick={onCancle}>

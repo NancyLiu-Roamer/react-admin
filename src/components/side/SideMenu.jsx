@@ -5,7 +5,7 @@ import { Menu, Layout } from 'antd';
 import './sideMenu.css'
 import menuConfig from '../../utils/menuConfig';
 import { connect } from 'react-redux';
-const {Sider} = Layout;
+const { Sider } = Layout;
 const { SubMenu } = Menu;
 
 function SideMenu(props) {
@@ -18,11 +18,6 @@ function SideMenu(props) {
   useEffect(() => {
     setMenuList(menuConfig)
   }, [location])
-  // console.log(props,'side');
-  //home page menu permission
-  // const checkPermission = (item) => {
-  //   return item.permission === 1
-  // }
 
   const renderMenu = (menuList) => {
     return menuList.map(item => {
@@ -53,8 +48,8 @@ function SideMenu(props) {
       collapsible collapsed={props.isCollapsed}>
       <div className='side-wrapper'>
         <div className="logo">
-          {props.isCollapsed ? <span></span>  : <span>Blog Management</span> }         
-          </div>
+          {props.isCollapsed ? <span></span> : <span>Blog Management</span>}
+        </div>
         <Menu mode="inline" theme='dark'
           defaultOpenKeys={openKeys}
           defaultSelectedKeys={selectKeys}>
@@ -66,6 +61,6 @@ function SideMenu(props) {
   )
 }
 export default connect(
-  state=>({isCollapsed:state.collapseStore}),
+  state => ({ isCollapsed: state.collapseStore }),
   {}
 )(withRouter(SideMenu))

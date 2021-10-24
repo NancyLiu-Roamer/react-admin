@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { Modal, Table, Button, Tag } from 'antd'
 import { EyeTwoTone, ExclamationCircleOutlined,DownloadOutlined} from '@ant-design/icons'
-import axios from 'axios'
+import { reqBlog } from '../../api/blog'
+import { updateBlog } from '../../api/blog'
 export default function Published(props) {
     const [blogList, setBlogList] = useState([])
     useEffect(() => {
-        axios.get('http://localhost:3000/posts?status=2').then(
-            res => {
-                setBlogList(res.data)
-            }
-        )
+        const fetchData = async()=>{
+            const response = await reqBlog({status:2})
+            setBlogList(response.data.data.blogs)
+        }
+        fetchData()
     }, [])
 
     const columns = [
@@ -71,6 +72,12 @@ export default function Published(props) {
             }
         }
     ]
+    //archive blog
+    const arcBlog = async (item)=>{
+        const response = await updateBlog({id:item.id,status:3})
+        if(response.data.status===0){
+        }
+    }
 
     // remove blog from online
     const onRemove = (item)=>{
@@ -79,9 +86,7 @@ export default function Published(props) {
             icon: <ExclamationCircleOutlined />,
             okText: 'OK',
             onOk() {
-                axios.patch(`http://localhost:3000/posts/${item.id}`,{
-                    status:3
-                }).then()
+               arcBlog(item)
             },
             cancelText: 'Cancel',
         });

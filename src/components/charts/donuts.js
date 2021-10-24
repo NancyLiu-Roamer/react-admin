@@ -1,8 +1,11 @@
 import _ from 'lodash'
 export default function makeDonuts(donutName, data) {
+  const {blogs,tags} = data
   const tempArry = []
-  const tagList = data.map(item => item.tags)
-  const temp = _.countBy([].concat.apply([], tagList))
+  // map blog=>tag
+  const blogByTag = blogs.map(item => item.tags)
+  // count how many posts per tag
+  const temp = _.countBy([].concat.apply([], blogByTag))
   for (let [key, value] of Object.entries(temp)) {
     const tem = { 'value': value, 'name': key==1?'Vue':key==2?'React':'NodeJS' }  
     tempArry.push(tem)

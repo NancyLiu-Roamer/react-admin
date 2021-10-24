@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { PageHeader, Descriptions, Row, Tag } from 'antd';
-import axios from 'axios';
+import { reqBlog } from '../../../api/blog';
 import './preview.css'
 export default function Preview(props) {
     const [blogContent, setBlog] = useState({})
+    
+    //get blog
     useEffect(() => {
-        axios.get(`http://localhost:3000/posts/?id=${props.match.params.id}`).then(
-            res => {
-                setBlog(res.data[0])
-            }
-        )
+        const fetchData = async ()=>{
+        try {
+            const response = await reqBlog({id:props.match.params.id})
+            setBlog(response.data.data.blogs[0])
+        } catch (error) {
+            console.log(error);
+        }            
+        }
+        fetchData()
 
-    }, [props.match.params.id])
+    }, [])
     return (
         <div className='preview-warapper'>
             {

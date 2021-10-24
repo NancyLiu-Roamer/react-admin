@@ -1,9 +1,12 @@
 import _ from 'lodash'
 export default function makePie(pieName,data){
-    const temp = _.groupBy(data, item => (item.role.title))
+    const {users,roles} = data
+    //grouby roleId
+    const temp = _.groupBy(users, item => (item.roleId))
     const tempArry = []
+    // change roleId => role name
     for (let [key, value] of Object.entries(temp)) {
-        const a = { 'value': value.length, 'name': key }
+        const a = { 'value': value.length, 'name': key==1?'Admin':key==2?'Manage':'User' }
         tempArry.push(a)
     }
     const option = {

@@ -4,10 +4,10 @@ import {
     Row, Col, notification
 } from 'antd'
 import { DatePicker } from 'antd';
-import { UploadOutlined} from '@ant-design/icons';
 import axios from 'axios';
 import BlogEditor from '../../components/BlogEditor';
 import './create.css'
+import { createBlog } from '../../api/blog';
 export default function Create(props) {
 
     const [tags, setTags] = useState([])
@@ -16,9 +16,9 @@ export default function Create(props) {
 
     //config tag list
     useEffect(() => {
-        axios.get('http://localhost:3000/tagList').then(
+        axios.get('/tags').then(
             res => {
-                setTags(res.data)
+                setTags(res.data.data.tag)
             }
         )
     }, [])
@@ -32,27 +32,28 @@ export default function Create(props) {
     };
 
     // collect form data
-    const onFinish = (fieldsValue) => {
-        const values = {          
+    const onFinish = async (fieldsValue) => {
+        const values = {
             'date': fieldsValue['date-picker'].format('MMMM Do YYYY'),
-            'title':fieldsValue.title,
-            'tags':fieldsValue.tag,
-            'blog':blogContent,
-            'status':1,
-            'image':fieldsValue.image
+            'title': fieldsValue.title,
+            'tags': fieldsValue.tag,
+            'blog': blogContent,
+            'status': 1,
+            'id': Date.now()
+            //'image':fieldsValue.image
         }
-        console.log(values);
-        axios.post('http://localhost:3000/posts',{...values}).then(
-            res=>{
-                notification.info({
-                    message: ``,
-                    description:
-                        'Successfully Submitted',
-                    placement: 'topRight'
-                });
-                props.history.push('/blog-management/draft')
-            }
-        )
+        try {
+            const response = await createBlog({ ...values })
+            notification.info({
+                message: ``,
+                description:
+                    'Successfully Submitted',
+                placement: 'topRight'
+            });
+            props.history.push('/blog-management/draft')
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -88,7 +89,7 @@ export default function Create(props) {
                 <Form.Item name="blogContent" label="Blog">
                     <BlogEditor collectBlog={(value) => {
                         setBlogContent(value)
-                        }} />
+                    }} />
                 </Form.Item>
 
                 {/* date */}

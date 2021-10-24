@@ -5,15 +5,18 @@ import {
     DeleteTwoTone, EditOutlined, EyeTwoTone,
     ExclamationCircleOutlined, CloudUploadOutlined
 } from '@ant-design/icons'
-
+import { reqBlog } from '../../api/blog'
+import { deleteBlog } from '../../api/blog'
+import { updateBlog } from '../../api/blog'
 export default function Draft(props) {
     const [blogList, setBlogList] = useState([])
     useEffect(() => {
-        axios.get('http://localhost:3000/posts/?status_ne=2').then(
-            res => {
-                setBlogList(res.data)
-            }
-        )
+        const fetchData = async () => {
+            const response = await reqBlog({})
+            const temp = response.data.data.blogs
+            setBlogList(temp.filter(item => { return item.status != 2 }))
+        }
+        fetchData()
     }, [])
 
     const columns = [
@@ -31,10 +34,10 @@ export default function Draft(props) {
             render: tags => (
                 <span>
                     {tags.map(tag => {
-                        let color = tag >2 ? 'geekblue' : 'green';
+                        let color = tag > 2 ? 'geekblue' : 'green';
                         return (
                             <Tag color={color} key={tag}>
-                                {tag===1?'Vue':tag===2?'React':'NodeJS'}
+                                {tag === 1 ? 'Vue' : tag === 2 ? 'React' : 'NodeJS'}
                             </Tag>
                         );
                     })}
@@ -99,13 +102,13 @@ export default function Draft(props) {
             cancelText: 'Cancel',
         });
     }
-    const deleteMethod = (item) => {
-        console.log(item)
-        axios.delete(`http://localhost:3000/posts/${item.id}`).then(
-            res => {
-                console.log(res.data)
-            }
-        )
+    const deleteMethod = async (item) => {
+        const response = await deleteBlog(item.id)
+        setBlogList(blogList)
+    }
+    //publish blog
+    const publishBlog = async (item) => {
+        const response = await updateBlog({ id: item.id, status: 2 })
     }
 
     // publish blog
@@ -115,9 +118,7 @@ export default function Draft(props) {
             icon: <ExclamationCircleOutlined />,
             okText: 'OK',
             onOk() {
-                axios.patch(`http://localhost:3000/posts/${item.id}`, {
-                    status: 1
-                }).then(res => {})
+                publishBlog(item)
             },
             cancelText: 'Cancel',
         });

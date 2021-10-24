@@ -4,14 +4,14 @@ const cookieParser = require('cookie-parser')
 app.use(express.json())
 app.use(express.urlencoded())
 app.use(cookieParser());
-
-const login  = require('./routers/login/login') 
-const products = require('./routers/products/index')
-const users = require('./routers/users/index')
 const mongoose = require('mongoose')
+const login  = require('./routers/login/login') 
+const users = require('./routers/users/index')
+const blogs = require('./routers/posts/index')
+const tags = require('./routers/tags/index')
 
 // connect db by mongoose
-mongoose.connect('mongodb://localhost/server_db2')
+mongoose.connect('mongodb://localhost/react-admin')
   .then(() => {
     console.log('db success!!!')
     // listen 5000 only when database connected successfully
@@ -25,7 +25,8 @@ mongoose.connect('mongodb://localhost/server_db2')
 
 //route module
 app.use('/login',login)
-app.use('/products',products)
 app.use('/users',users)
+app.use('/posts',blogs)
+app.use('/tags',tags)
 
 

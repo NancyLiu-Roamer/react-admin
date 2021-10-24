@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from 'react'
-import { Card,Row,Col } from 'antd';
-import axios from 'axios';
+import { Card, Row, Col } from 'antd';
+import { reqBlog } from '../../api/blog';
 import { Link } from 'react-router-dom';
 const { Meta } = Card;
+
 export default function Posts() {
     const [blogList, setBlogList] = useState()
 
+    //set blog list
     useEffect(() => {
-        axios.get('http://localhost:3000/posts').then(
-            res => {
-                setBlogList(res.data)
-            }
-        )
+        const fetchData = async () => {
+            const response = await reqBlog({})
+            setBlogList(response.data.data.blogs)
+        }
+        fetchData()
     }, [])
     return (
         <div >
-           <Row gutter={[24,24]}>
+            <Row gutter={[24, 24]}>
                 {
                     blogList?.map(item => {
-                        return (                             
+                        return (
                             <Col span={6} key={item.id}>
                                 <Link to={`/blog-management/preview/${item.id}`}>
                                     <Card
@@ -29,7 +31,7 @@ export default function Posts() {
                                         <Meta title={item.title} description={item.date} />
                                     </Card>
                                 </Link>
-                             </Col>
+                            </Col>
 
                         )
                     })

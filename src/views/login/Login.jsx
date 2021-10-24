@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import './login.css'
 import { Form, Input, Button, Checkbox, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { reqLogin } from '../../api';
+import { reqLogin } from '../../api/login/login';
 export default function Login() {
     let history = useHistory()
     const onFinish = async (values) => {

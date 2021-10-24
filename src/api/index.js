@@ -1,9 +1,5 @@
 import axios from "axios";
 import {store} from '../redux/store'
-// const qs = require('query-string')
-
-//base url
-axios.defaults.baseURL='http://localhost:3000'
 
 
 // Add a request interceptor
@@ -28,21 +24,6 @@ axios.interceptors.response.use(function (response) {
   // Do something with response error
   return Promise.reject(error);
 });
-//login
-export async function reqLogin(values) {
-  return axios({
-    method: "post",
-    url: "/login",
-    data:values
-  })
 
-}
 
-//get product category
-export async function reqProductCate() {
-  return axios({
-    method: "get",
-    url: "/products/category"
-  })
 
-}
