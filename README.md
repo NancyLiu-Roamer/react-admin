@@ -23,7 +23,7 @@ It is based on mongoDB and express
 ## Function
 
 ### Home Page
-It is an overall of project --- Echarts.
+It is an overall of project --- Echarts
 ![Home](src/assets/img/home.png)
 
 ### Create Blog
@@ -34,21 +34,6 @@ It is supported RT.
 It is supported RT.
 ![Preview](src/assets/img/preview.png)
 
-### Catogory
+### Category
 We got draft/active/archived status for blogs. You can do CRUD on this page.
 ![Preview](src/assets/img/category.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
